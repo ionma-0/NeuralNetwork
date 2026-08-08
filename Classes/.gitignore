@@ -1,0 +1,7 @@
+main.exe
+main.obj
+main.pdb
+vc140.pdb
+*.exe
+*.obj
+*.pdb

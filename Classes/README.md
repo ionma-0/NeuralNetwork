@@ -1,0 +1,1 @@
+Very basic Neural Network coded from scratch in C++ (not finished)
