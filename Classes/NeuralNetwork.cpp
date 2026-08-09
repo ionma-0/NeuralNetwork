@@ -37,8 +37,9 @@ float NeuralNetwork::calculateLoss(const std::vector<float>& inData,const std::v
             default:
             case Activation::Identity:
                 for(int i = 0; i < lastLayerSize; i++){
-                    loss += (outData[i] - prediction[i])/2.0f;
+                    loss += (outData[i] - prediction[i])*(outData[i] - prediction[i])/2.0f;
                 }
+
                 loss = loss/(float)lastLayerSize;
                 break;
 
@@ -171,6 +172,7 @@ SaturatedNeuronReport NeuralNetwork::checkForSaturatedNeurons(const std::vector<
             if(saturatedNeuronMask[i][j]){
                 anySaturated = true;
                 saturatedPerLayer[i]++;
+                report.howManySaturated++;
             }
         }
     }
@@ -182,7 +184,7 @@ SaturatedNeuronReport NeuralNetwork::checkForSaturatedNeurons(const std::vector<
     return report;
 }
 
-// PRIVATE METHODS
+
 std::vector<float> NeuralNetwork::forwardPropagation(const std::vector<float>& in){
     examples++;
     input = in;
@@ -198,6 +200,12 @@ std::vector<float> NeuralNetwork::forwardPropagation(const std::vector<float>& i
     return layers[networkDepth - 2].postActivationValues();
 }
 
+
+std::vector<float> NeuralNetwork::output(){
+    return layers[networkDepth-2].postActivationValues();
+}
+
+// PRIVATE METHODS
 void NeuralNetwork::backwardPropagation(const std::vector<float>& data){
     std::vector<float> auxDelta;
     auxDelta = layers[networkDepth - 2].lastLayerBackProp(data, lastLayerActivation);
